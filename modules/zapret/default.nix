@@ -15,7 +15,7 @@ in
 
     config = mkOption {
       type = types.str;
-      default = "general(ALT)";
+      default = "general(ALT2)";
       description = "Zapret config to use (general, general(ALT), general (SIMPLE FAKE))";
     };
     

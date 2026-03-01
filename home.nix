@@ -67,7 +67,11 @@ in
   # ---------------------------------------------------------
   programs.zsh = {
     enable = true;
-    autosuggestion.enable = true;
+    autosuggestion = {
+      enable = true;
+      strategy = [ "history" ];
+    };
+    enableCompletion = true;
     syntaxHighlighting.enable = true;
     oh-my-zsh = {
       enable = true;
@@ -86,9 +90,11 @@ in
   # ---------------------------------------------------------
   programs.git = {
     enable = true;
-    userName = "LIDJEN";
-    userEmail = "andrewsawa21@gmail.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "LIDJEN";
+        email = "andrewsawa21@gmail.com";
+      };
       init.defaultBranch = "main";
       pull.rebase = true;
       core.editor = "nvim";

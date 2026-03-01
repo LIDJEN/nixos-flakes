@@ -67,22 +67,24 @@ in
       
       # Сервисы для полноценного DE [citation:2]
       services.mako = {
-        enable = true;
-        defaultTimeout = 5000;
-        anchor = "top-right";
-        backgroundColor = "#1e1e2eff";
-        textColor = "#cdd6f4";
-        borderColor = "#cba6f7";
-        borderRadius = 8;
-        borderSize = 2;
+        settings = {
+          enable = true;
+          defaultTimeout = 5000;
+          anchor = "top-right";
+          backgroundColor = "#1e1e2eff";
+          textColor = "#cdd6f4";
+          borderColor = "#cba6f7";
+          borderRadius = 8;
+          borderSize = 2;
+        };
       };
       
       services.swayidle = {
         enable = true;
-        events = [
-          { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock -f"; }
-          { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -f"; }
-        ];
+        events = {
+          "before-sleep" = "${pkgs.swaylock}/bin/swaylock -f";
+          "lock" = "${pkgs.swaylock}/bin/swaylock -f";
+        };
         timeouts = [
           { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock -f"; }
           { timeout = 600; command = "${pkgs.systemd}/bin/systemctl suspend"; }

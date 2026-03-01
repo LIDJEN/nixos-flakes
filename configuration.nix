@@ -1,5 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nixpkgs-stable, ... }:
 
+let
+  stable = nixpkgs-stable.legacyPackages.${pkgs.system};
+in 
 {
   # 🔧 IMPORT HARDWARE CONFIG (contains fileSystems, LUKS, swap)
   imports = [
@@ -78,7 +81,6 @@
   modules.niri.enable = true;
   modules.neovim = {
     enable = true;
-    withNvChad = true;
     extraPackages = with pkgs; [
       gopls
       texlab
@@ -89,7 +91,7 @@
   environment.systemPackages = with pkgs; [
     waybar wofi kitty grim slurp wl-clipboard swaynotificationcenter
     neovim git curl wget ripgrep fd bat
-    nettools openvpn wireguard-tools
+    nettools openvpn wireguard-tools 
     vmware-workstation remmina freerdp virt-manager libvirt
     vivaldi thunderbird htop btop lsof pciutils usbutils lm_sensors
     asusctl supergfxctl btrfs-progs
@@ -97,14 +99,33 @@
   nixpkgs.config.allowUnfree = true;
 
   # 👤 USER
+  programs.zsh.enable = true;
+  environment.shells = with pkgs; [ zsh ];
+
   users.users.lidjen = {
     isNormalUser = true;
     description = "LIDJEN";
     extraGroups = [ "networkmanager" "wheel" "video" "libvirtd" "input" ];
     initialPassword = "123456789";
     packages = with pkgs; [ firefox ];
+    shell = pkgs.zsh;
   };
   security.sudo.wheelNeedsPassword = true;
+
+  # Fonts
+  fonts.packages = with stable; [
+    jetbrains-mono
+    (nerdfonts.override { fonts = [ "JetBrainsMono"]; })
+  ];
+
+  fonts.fontDir.enable = true;
+  fonts.fontconfig = {
+    enable = true;
+    defaultFonts = {
+      monospace = [ "JetBrainsMono Nerd Font" "JetBrains Mono"];
+    };
+  };
+
 
   # GARBAGE
   nix.gc = {
