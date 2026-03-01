@@ -72,8 +72,8 @@
       jetbrains-mono
       nerd-fonts.jetbrains-mono
       noto-fonts
-      noto-fonts-cgk-sans
-      noto-fonts-emojy
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
     ];
   };
 

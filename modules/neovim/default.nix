@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.modules.neovim;
+  installScript = ./install-nvchad.sh;
 in
 {
   options.modules.neovim = {
@@ -23,7 +24,6 @@ in
   };
 
   config = mkIf cfg.enable {
-    # Пакеты для Neovim и LSP
     home-manager.users.lidjen = { pkgs, ... }: {
       home.packages = with pkgs; [
         # Основные утилиты для Neovim
@@ -31,52 +31,52 @@ in
         fd
         tree-sitter
         
-        # LSP серверы (по умолчанию)
-        nil                          # Nix LSP
+        # LSP серверы
+        nil
         nodePackages.bash-language-server
         dockerfile-language-server
         nodePackages.typescript-language-server
-        nodePackages.vscode-langservers-extracted  # HTML, CSS, JSON
-        pyright                      # Python LSP
-        rust-analyzer                 # Rust LSP
-        lua-language-server           # Lua LSP
+        nodePackages.vscode-langservers-extracted
+        pyright
+        rust-analyzer
+        lua-language-server
         
         # Форматтеры
         nixpkgs-fmt
         prettierd
-        black                        # Python formatter
-        stylua                        # Lua formatter
-        
-        # Дополнительные пакеты из опции
+        black
+        stylua
       ] ++ cfg.extraPackages;
       
-      # Базовая конфигурация Neovim
       programs.neovim = {
         enable = true;
         viAlias = true;
         vimAlias = true;
         defaultEditor = true;
         
-        # Если NvChad включён, не переопределяем конфиг здесь
-        # (NvChad установится отдельно через git)
-      };
-      
-      # Установка NvChad если нужно
-      home.activation = mkIf cfg.withNvChad {
-        installNvChad = lib.hm.dag.entryAfter ["writeBoundary"] ''
-          if [ ! -d "$HOME/.config/nvim" ]; then
-            $DRY_RUN_CMD git clone https://github.com/NvChad/starter "$HOME/.config/nvim"
-            $DRY_RUN_CMD nvim --headload "+Lazy! sync" +qa
-            $VERBOSE_ECHO "NvChad installed"
-          else
-            $DRY_RUN_CMD nvim --headload "+Lazy! sync" +qa
-            $VERBOSE_ECHO "NvChad already installed, updated plugins"
-          fi
+        # Базовая конфигурация
+        extraConfig = ''
+          " Путь для плагинов NvChad
+          set runtimepath^=~/.config/nvim
         '';
       };
       
-      # Символическая ссылка для кастомной конфигурации (опционально)
-      xdg.configFile."nvim/lua/custom".source = mkIf cfg.withNvChad ./custom;
+      home.file.".local/bin/nvchad-install" = mkIf cfg.withNvChad {
+        source = installScript;
+	executable = true;
+      };
+
+      home.file.".config/nvim/.keep".text = ''
+        # NvChad будет установлен вручную
+        # Запусти: git clone https://github.com/NvChad/starter ~/.config/nvim
+      '';
     };
+    
+    # Добавляем сообщение пользователю
+    warnings = mkIf cfg.withNvChad [
+      "NvChad не установлен автоматически. После пересборки выполни:"
+      "  git clone https://github.com/NvChad/starter ~/.config/nvim"
+      "  nvim  # для установки плагинов"
+    ];
   };
 }

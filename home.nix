@@ -57,8 +57,6 @@ in
   # Desktop env
   services.swayidle = {
     enable = true;
-    defaultTimeout = 5000;
-    anchor = "top-right";
 
     events = [
       { event = "before-sleep"; command = "$pkgs.swaylock}/bin/swaylock -f"; }
@@ -68,6 +66,17 @@ in
       { timeout = 300; command = "${pkgs.swaylock}/bin/swaylock -f"; }
       { timeout = 600; command = "${pkgs.systemd}/bin/systemctl suspend"; }
     ];
+  };
+
+  services.mako = {
+    enable = true;
+    anchor = "top-right";
+    defaultTimeout = 5000;
+    backgroundColor = "#1e1e2eff";
+    textColor = "#cdd6f4";
+    borderColor = "#cba6f7";
+    borderRadius = 8;
+    borderSize = 2;
   };
 
   programs.waybar = {
