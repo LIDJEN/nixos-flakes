@@ -53,7 +53,29 @@
   # 🖥️ DISPLAY
   services.displayManager.gdm = { enable = true; wayland = true; };
   services.desktopManager.gnome.enable = true;
-  programs.hyprland.enable = true;
+  programs.niri.enable = true;
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPoortals = [ pkgs.xdg-desktop-portal-gnome pkgs.xdg-desktop-portal-gtk ];
+  };
+
+  security.polkit.enable =true;
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.swaylock = {};
+
+  # Fonts
+  fonts = {
+    fontDir.enable = true;
+    packages = with pkgs; [
+      jetbrains-mono
+      nerd-fonts.jetbrains-mono
+      noto-fonts
+      noto-fonts-cgk-sans
+      noto-fonts-emojy
+    ];
+  };
 
   # 👆 FINGERPRINT
   services.fprintd = {
@@ -64,6 +86,7 @@
   };
   security.pam.services.sudo.fprintAuth = true;
   security.pam.services."gdm-password".fprintAuth = true;
+  modules.niri.enable = true;
 
   # 📦 PACKAGES
   environment.systemPackages = with pkgs; [

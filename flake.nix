@@ -15,11 +15,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix4nvchad = {
+      url = "github:nix-community/nix4nvchad";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, lanzaboote, home-manager, ... }: {
+  outputs = { self, nixpkgs, nixos-hardware, lanzaboote, home-manager, nix4nvchad, ... }: {
     nixosConfigurations.rog-flow-x13 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      specialArgs = { inherit nix4nvchad; };
       modules = [
         nixos-hardware.nixosModules.asus-flow-gv302x-amdgpu
         # nixos-hardware.nixosModules.asus-flow-gv302x-nvidia
@@ -31,7 +37,9 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.lidjen = import ./home.nix;
+	  home-manager.extraSpecialArgs = { inherit nix4nvchad; };
         }
+	./modules/niri
       ];
     };
   };
