@@ -58,7 +58,7 @@
   xdg.portal = {
     enable = true;
     wlr.enable = true;
-    extraPoortals = [ pkgs.xdg-desktop-portal-gnome pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gnome pkgs.xdg-desktop-portal-gtk ];
   };
 
   security.polkit.enable =true;
