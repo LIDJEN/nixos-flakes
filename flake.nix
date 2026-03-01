@@ -22,11 +22,13 @@
     };
 
   };
-
   outputs = { self, nixpkgs, nixos-hardware, nixpkgs-stable, lanzaboote, home-manager, nix4nvchad, ... }: {
     nixosConfigurations.rog-flow-x13 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      specialArgs = { inherit nix4nvchad; };
+      specialArgs = {
+        inherit nix4nvchad;
+	inherit nixpkgs-stable;
+      };
       modules = [
         nixos-hardware.nixosModules.asus-flow-gv302x-amdgpu
         # nixos-hardware.nixosModules.asus-flow-gv302x-nvidia
@@ -42,20 +44,17 @@
         }
 	./modules/niri
 	./modules/neovim
+        {
+          # Fonts
+          fonts.fontDir.enable = true;
+          fonts.packages = with nixpkgs-stable.legacyPackages.x86_64-linux; [
+            jetbrains-mono
+            noto-fonts
+	    noto-fonts-cjk-sans
+            noto-fonts-color-emoji
+          ];
+        }
       ];
     };
   };
-
-  # Fonts
-  fonts = {
-    fontDir.enable = true;
-    packages = with nixpkgs-stable.legacyPackages.x86_64-linux; [
-      jetbrains-mono
-      nerd-fonts.jetbrains-mono
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-color-emoji
-    ];
-  };
-
 }
