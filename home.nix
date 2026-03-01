@@ -55,7 +55,7 @@ in
 
 
   # Desktop env
-  services.swaidle = {
+  services.swayidle = {
     enable = true;
     defaultTimeout = 5000;
     anchor = "top-right";
