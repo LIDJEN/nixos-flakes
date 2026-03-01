@@ -44,6 +44,7 @@
         }
 	./modules/niri
 	./modules/neovim
+	./modules/zapret
         {
           # Fonts
           fonts.fontDir.enable = true;
