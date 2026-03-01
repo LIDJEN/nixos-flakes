@@ -65,18 +65,6 @@
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.swaylock = {};
 
-  # Fonts
-  fonts = {
-    fontDir.enable = true;
-    packages = with pkgs; [
-      jetbrains-mono
-      nerd-fonts.jetbrains-mono
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-color-emoji
-    ];
-  };
-
   # 👆 FINGERPRINT
   services.fprintd = {
     enable = true;

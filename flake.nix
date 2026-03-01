@@ -4,6 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
@@ -44,4 +45,17 @@
       ];
     };
   };
+
+  # Fonts
+  fonts = {
+    fontDir.enable = true;
+    packages = with nixpkgs-stable.legacyPackages.x86_64-linux; [
+      jetbrains-mono
+      nerd-fonts.jetbrains-mono
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-color-emoji
+    ];
+  };
+
 }
