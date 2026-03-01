@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, zapret-discord-youtube, ... }:
 
 with lib;
 
@@ -6,7 +6,10 @@ let
   cfg = config.modules.zapret;
 in
 {
-  description = "NixOS configuration with zapret-discord-youtube";
+  imports = [
+    zapret-discord-youtube.nixosModules.default
+  ];
+
   options.modules.zapret = {
     enable = mkEnableOption "zapret for Discord/Youtube bypass";
 
@@ -17,7 +20,7 @@ in
     };
     
     gameFilter = mkOption {
-      type == types.enum [ "null" "all" "tcp" "udp" ];
+      type = types.enum [ "null" "all" "tcp" "udp" ];
       default = "null";
       description = "Game filter mode";
     };

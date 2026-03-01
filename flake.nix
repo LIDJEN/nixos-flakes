@@ -21,13 +21,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    zapret-discord-youtube = {
+      url = "github:kartavkun/zapret-discord-youtube";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, nixpkgs, nixos-hardware, nixpkgs-stable, lanzaboote, home-manager, nix4nvchad, ... }: {
+  outputs = { self, nixpkgs, nixos-hardware, nixpkgs-stable, lanzaboote, home-manager, nix4nvchad, zapret-discord-youtube, ... }: {
     nixosConfigurations.rog-flow-x13 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = {
         inherit nix4nvchad;
 	inherit nixpkgs-stable;
+	inherit zapret-discord-youtube;
       };
       modules = [
         nixos-hardware.nixosModules.asus-flow-gv302x-amdgpu
