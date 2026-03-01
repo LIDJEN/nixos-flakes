@@ -59,10 +59,7 @@ in
     enable = true;
     defaultTimeout = 5000;
     anchor = "top-right";
-  };
 
-  services.swayidle = {
-    enable = true;
     events = [
       { event = "before-sleep"; command = "$pkgs.swaylock}/bin/swaylock -f"; }
       { event = "lock"; command = "${pkgs.swaylock}/bin/swaylock -f"; }
