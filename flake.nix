@@ -40,6 +40,7 @@
 	  home-manager.extraSpecialArgs = { inherit nix4nvchad; };
         }
 	./modules/niri
+	./modules/neovim
       ];
     };
   };

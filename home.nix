@@ -101,45 +101,6 @@ in
   };
 
   # ---------------------------------------------------------
-  # 🎮 NVIM (NvChad)
-  # ---------------------------------------------------------
-  # programs.neovim ={
-  #   enable = true;
-  #   defaultEditor = true;
-  #   viAlias = true;
-  #   vimAlias = true;
-  # };
-
-  programs.nvchad = {
-    enable = true;
-    
-    extraPackages = with pkgs; [
-      # LSP серверы
-      nil           # Nix LSP
-      nodePackages.bash-language-server
-      nodePackages.dockerfile-language-server-nodejs
-      nodePackages.typescript-language-server
-      nodePackages.vscode-langservers-extracted
-      pyright       # Python LSP
-      rust-analyzer # Rust LSP
-      lua-language-server
-      
-      # Форматтеры
-      nixpkgs-fmt
-      prettierd
-      black
-      stylua
-      
-      # Дополнительные утилиты
-      ripgrep
-      fd
-      tree-sitter
-    ];
-    
-    backup = false;
-  };
-
-  # ---------------------------------------------------------
   # 🎨 GIT CONFIG
   # ---------------------------------------------------------
   programs.git = {

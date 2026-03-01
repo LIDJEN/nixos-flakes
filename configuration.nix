@@ -86,7 +86,16 @@
   };
   security.pam.services.sudo.fprintAuth = true;
   security.pam.services."gdm-password".fprintAuth = true;
+
   modules.niri.enable = true;
+  modules.neovim = {
+    enable = true;
+    withNvChad = true;
+    extraPackages = with pkgs; [
+      gopls
+      texlab
+    ];
+  };
 
   # 📦 PACKAGES
   environment.systemPackages = with pkgs; [
