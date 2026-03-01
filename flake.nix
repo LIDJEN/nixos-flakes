@@ -23,7 +23,7 @@
 
   };
 
-  outputs = { self, nixpkgs, nixos-hardware, lanzaboote, home-manager, nix4nvchad, ... }: {
+  outputs = { self, nixpkgs, nixos-hardware, nixpkgs-stable, lanzaboote, home-manager, nix4nvchad, ... }: {
     nixosConfigurations.rog-flow-x13 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       specialArgs = { inherit nix4nvchad; };
