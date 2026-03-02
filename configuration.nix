@@ -91,6 +91,28 @@ in
   ];
   nixpkgs.config.allowUnfree = true;
 
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    fuse3
+    libGL
+    libGLU
+    glfw
+    libxkbcommon
+    fontconfig
+    freetype
+    libX11
+    libXext
+    libXfixes
+    libXfixes
+    libxcb
+    e2fsprogs
+  ];
+
+  hardware.opengl.enable = true;
+  hardware.opengl.driSupport32Bit = true;
+
   # 👤 USER
   programs.zsh.enable = true;
   environment.shells = with pkgs; [ zsh ];
