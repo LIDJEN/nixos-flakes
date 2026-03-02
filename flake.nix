@@ -30,7 +30,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-stable, nixos-hardware, lanzaboote, home-manager, nix4nvchad, zapret-discord-youtube, ... }: {
     
-    # ---------- NIXOS КОНФИГУРАЦИЯ (основная) ----------
+    # ---------- NIXOS КОНФИГУРАЦИЯ ----------
     nixosConfigurations.rog-flow-x13 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       
@@ -47,8 +47,8 @@
         lanzaboote.nixosModules.lanzaboote
         home-manager.nixosModules.home-manager
         
-        # Главный модуль, который импортирует все остальные
-        ./modules
+        
+        ./modules/system
         
         {
           home-manager.useGlobalPkgs = true;
@@ -63,28 +63,22 @@
       ];
     };
     
-    # ---------- ОТДЕЛЬНАЯ HOME-MANAGER КОНФИГУРАЦИЯ ----------
+    # ---------- HOME-MANAGER КОНФИГУРАЦИЯ ----------
     homeConfigurations = {
       lidjen = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
         
-        # extraSpecialArgs для передачи inputs
         extraSpecialArgs = {
           inherit nix4nvchad;
           inherit nixpkgs-stable;
           inherit zapret-discord-youtube;
         };
         
-        # Модули home-manager
         modules = [
-          # Основной home.nix
           ./home.nix
-          
           nix4nvchad.homeManagerModules.default
-
-          ./modules/fonts
-          ./modules/niri
-          ./modules/neovim
+          
+          ./modules/home
         ];
       };
     };

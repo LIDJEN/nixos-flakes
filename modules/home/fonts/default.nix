@@ -3,16 +3,23 @@
 with lib;
 
 let
-  cfg = config.modules.home.fonts;
+  cfg = config.modules.home.fonts;  
   stable = nixpkgs-stable.legacyPackages.${pkgs.system};
 in
 {
   options.modules.home.fonts = {
-    enable = mkEnableOption "Fonts configuration";
+    enable = mkEnableOption "user fonts configuration";
     
     withNerdFonts = mkOption {
       type = types.bool;
       default = true;
+      description = "Whether to install Nerd Fonts";
+    };
+    
+    monospaceFont = mkOption {
+      type = types.str;
+      default = "JetBrainsMono Nerd Font";
+      description = "Default monospace font family";
     };
   };
 
@@ -22,11 +29,14 @@ in
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-emoji
-    ] ++ lib.optionals cfg.withNerdFonts [
-      stable.nerdfonts.jetbrains-mono
+      (nerdfonts.override { fonts = [ "JetBrainsMono" ]; })
     ];
 
-    fonts.fontconfig.enable = true;
-    fonts.fontDir.enable = true;
+    fonts.fontconfig = {
+      enable = true;
+      defaultFonts = {
+        monospace = [ cfg.monospaceFont "JetBrains Mono" ];
+      };
+    };
   };
 }

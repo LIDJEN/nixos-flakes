@@ -50,7 +50,7 @@ in
         plugins = [ "git" "fzf" "docker" "history" "colored-man-pages" ];
       };
       
-      initExtra = ''
+      initContent = ''
         # Environment variables
         ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: value: "export ${name}=${value}") cfg.extraEnvVars)}
         
@@ -78,7 +78,8 @@ in
       };
     };
 
-    # Общие алиасы home.shellAliases = {
+    # Общие алиасы
+    home.shellAliases = {
       # Navigation
       ".." = "cd ..";
       "..." = "cd ../..";

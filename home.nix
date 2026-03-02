@@ -15,6 +15,7 @@ in
   # ---------------------------------------------------------
   imports = [
     ./modules/home
+    nix4nvchad.homeManagerModules.default
   ];
 
   # ---------------------------------------------------------
@@ -52,7 +53,6 @@ in
 
   # Git (данные из secrets/git.nix)
   modules.home.git = {
-    enable = true;
     # Если нужно переопределить (приоритет выше secrets)
     # userName = "LIDJEN";
     # userEmail = "other@example.com";
@@ -67,16 +67,30 @@ in
 
   # Niri
   modules.home.niri = {
-    enable = true;
     # можно добавить опции
   };
 
   # Zapret
-  modules.home.zapret.enable = true;
+  modules.home.zapret = {
+    # Персональные домены
+    personalDomains = [
+      "my-blog.com"
+      "work-domain.org"
+    ];
+    
+    # Дополнительные алиасы
+    extraAliases = {
+      zap = "zapret-status";
+      zl = "zapret-logs";
+      zr = "zapret-restart";
+    };
+    
+    # Автообновление
+    autoUpdate = false;
+  };
 
   # Shell (общие алиасы)
   modules.home.shell = {
-    enable = true;
     extraAliases = {
       # Свои алиасы
       update-all = "nix flake update ~/Flake && sudo nixos-rebuild switch --flake ~/Flake#rog-flow-x13 && home-manager switch --flake ~/Flake#lidjen";

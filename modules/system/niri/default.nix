@@ -6,6 +6,10 @@ let
   cfg = config.modules.system.niri;
 in
 {
+  options.modules.system.niri = {
+    enable = mkEnableOption "system niri support";
+  };
+
   config = mkIf cfg.enable {
     programs.niri.enable = true;
 

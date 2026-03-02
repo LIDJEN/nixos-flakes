@@ -6,7 +6,7 @@ with lib;
 let
   cfg = config.modules.home.git;
   
-  secretsFile = "${flakeDir}/secrets/git.nix";
+  secretsFile = "/home/lidjen/Flake/secrets/git.nix";
   secrets = if builtins.pathExists secretsFile 
             then import secretsFile 
             else {

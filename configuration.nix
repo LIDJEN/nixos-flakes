@@ -56,7 +56,7 @@ in
   # 🖥️ DISPLAY
   services.displayManager.gdm = { enable = true; wayland = true; };
   services.desktopManager.gnome.enable = true;
-  programs.niri.enable = true;
+  modules.system.niri.enable = true;
 
   xdg.portal = {
     enable = true;
@@ -78,14 +78,7 @@ in
   security.pam.services.sudo.fprintAuth = true;
   security.pam.services."gdm-password".fprintAuth = true;
 
-  modules.niri.enable = true;
-  modules.neovim = {
-    enable = true;
-    extraPackages = with pkgs; [
-      gopls
-      texlab
-    ];
-  };
+  # modules.system.niri.enable = true;
 
   # 📦 PACKAGES
   environment.systemPackages = with pkgs; [
@@ -126,6 +119,16 @@ in
     };
   };
 
+  # Zapret
+  modules.system.zapret = {
+    enable = true;
+    config = "general(ALT5)";
+    listGeneral = [
+      "discord.com"
+      "youtube.com"
+      "your-custom-domain.com"
+    ];
+  };
 
   # GARBAGE
   nix.gc = {
