@@ -94,7 +94,16 @@ in
         # 👇 Кастомный chadrc (если нужен)
         extraConfig = mkIf (cfg.chadrc != "") ''
           -- Custom chadrc configuration
+          local M = {}
+
+          M.options = {
+            relativenumber = true,
+            number = true,
+          }
+
           ${cfg.chadrc}
+
+          return M
         '';
         
         # 👇 Кастомные плагины

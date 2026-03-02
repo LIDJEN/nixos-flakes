@@ -119,7 +119,7 @@ in
     # Home-manager aliases
     hm = "home-manager";
     hms = "home-manager switch --flake ${userFlake}";
-    hme = "home-manager edit --flake ${userFlake}";
+    hme = "home-manager edit --flake ~/Flake/#lidjen";
     hmg = "home-manager generations";
     
     # System rebuild aliases
