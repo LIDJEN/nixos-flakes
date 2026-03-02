@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.modules.zapret;
+  cfg = config.modules.home.zapret;
 in
 {
   imports = [
@@ -51,6 +51,11 @@ in
   };
 
   config = mkIf cfg.enable {
+    home.shellAliases = {
+      zapret-status = "systemctl status zapret-discord-youtube";
+      zapret-logs = "journalctl -u zapret-discord-youtube -f";
+      zapret-restart = "sudo systemctl restart zapret-discord-youtube";
+    };
     services.zapret-discord-youtube = {
       enable = true;
       config = cfg.config;

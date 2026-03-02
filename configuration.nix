@@ -91,7 +91,7 @@ in
   environment.systemPackages = with pkgs; [
     waybar wofi kitty grim slurp wl-clipboard swaynotificationcenter
     neovim git curl wget ripgrep fd bat
-    nettools openvpn wireguard-tools 
+    nettools openvpn wireguard-tools tree
     vmware-workstation remmina freerdp virt-manager libvirt
     vivaldi thunderbird htop btop lsof pciutils usbutils lm_sensors
     asusctl supergfxctl btrfs-progs

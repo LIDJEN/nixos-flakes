@@ -82,9 +82,9 @@
           
           nix4nvchad.homeManagerModules.default
 
-          ./modules/fonts.nix
-          ./modules/niri.nix
-          ./modules/neovim.nix
+          ./modules/fonts
+          ./modules/niri
+          ./modules/neovim
         ];
       };
     };
