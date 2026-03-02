@@ -129,7 +129,6 @@
       },
       "original": {
         "owner": "nix-community",
-        "ref": "master",
         "repo": "lanzaboote",
         "type": "github"
       }
