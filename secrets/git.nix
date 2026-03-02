@@ -1,0 +1,6 @@
+{
+  # gitUserName = "";
+  # gitUserEmail = "";
+
+  # githubToken = "";
+}
