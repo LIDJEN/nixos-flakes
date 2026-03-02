@@ -10,6 +10,7 @@
     ./neovim
     ./zapret
     ./shell
+    ./katvan
   ];
 
   # options.modules.home = {

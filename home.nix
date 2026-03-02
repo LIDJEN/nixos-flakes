@@ -31,6 +31,7 @@ in
     neovim.enable = true;
     zapret.enable = true;
     shell.enable = true;
+    katvan.enable = true;
   };
 
   # ---------------------------------------------------------
