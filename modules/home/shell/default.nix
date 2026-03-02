@@ -78,8 +78,7 @@ in
       };
     };
 
-    # Общие алиасы
-    home.shellAliases = {
+    # Общие алиасы home.shellAliases = {
       # Navigation
       ".." = "cd ..";
       "..." = "cd ../..";
@@ -118,6 +117,6 @@ in
       hm-zapret = "nvim ${flakeDir}/modules/home/zapret/default.nix";
       hm-packages = "nvim ${flakeDir}/modules/home/packages/default.nix";
       hm-fonts = "nvim ${flakeDir}/modules/home/fonts/default.nix";
-    } # cfg.extraAliases;
+    } // cfg.extraAliases;
   };
 }
