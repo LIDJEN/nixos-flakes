@@ -1,5 +1,5 @@
 # /home/lidjen/Flake/home.nix
-{ pkgs, config, lib, nix4nvchad, nixpkgs-stable, zapret-discord-youtube, ... }:
+{ pkgs, config, lib, nixpkgs-stable, zapret-discord-youtube, ... }:
 
 let
   flakeDir = "/home/lidjen/Flake";
@@ -10,13 +10,15 @@ let
   userFlake = "${flakeDir}#${userName}";
 in
 {
+  home.username = userName;
+  home.homeDirectory = "/home/lidjen";
   # ---------------------------------------------------------
   # ИМПОРТ МОДУЛЕЙ
   # ---------------------------------------------------------
   imports = [
     ./modules/home
-    nix4nvchad.homeManagerModules.default
   ];
+  nixpkgs.config.allowUnfree = true;
 
   # ---------------------------------------------------------
   # ВКЛЮЧЕНИЕ МОДУЛЕЙ
@@ -39,11 +41,13 @@ in
   modules.home.packages = {
     extra = with pkgs; [
       typst
+      obsidian
       home-manager
       udiskie
       # Добавляй свои пакеты сюда
     ];
   };
+  
 
   # Шрифты
   modules.home.fonts = {
@@ -57,7 +61,7 @@ in
     # userName = "LIDJEN";
     # userEmail = "other@example.com";
     
-    extraConfig = {
+    extraSettings = {
       # Дополнительные настройки git
       # url."git@github.com:" = {
       #   insteadOf = "https://github.com/";

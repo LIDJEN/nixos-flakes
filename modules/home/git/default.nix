@@ -1,4 +1,3 @@
-# /home/lidjen/Flake/modules/home/git/default.nix
 { config, lib, pkgs, ... }:
 
 with lib;
@@ -6,7 +5,7 @@ with lib;
 let
   cfg = config.modules.home.git;
   
-  secretsFile = "/home/lidjen/Flake/secrets/git.nix";
+  secretsFile = /home/lidjen/Flake/secrets/git.nix;
   secrets = if builtins.pathExists secretsFile 
             then import secretsFile 
             else {
@@ -28,21 +27,9 @@ in
       default = null;
     };
     
-    extraConfig = mkOption {
+    extraSettings = mkOption {
       type = types.attrsOf types.anything;
       default = {};
-    };
-    
-    aliases = mkOption {
-      type = types.attrsOf types.str;
-      default = {
-        co = "checkout";
-        br = "branch";
-        ci = "commit";
-        st = "status";
-        unstage = "reset HEAD --";
-        last = "log -1 HEAD";
-      };
     };
   };
 
@@ -50,26 +37,51 @@ in
     programs.git = {
       enable = true;
       
-      userName = if cfg.userName != null 
+      # 👇 НОВЫЙ СИНТАКСИС - ВСЁ ВНУТРИ settings
+      settings = {
+        user = {
+          name = if cfg.userName != null 
                  then cfg.userName 
                  else secrets.gitUserName or "CHANGE_ME";
-      
-      userEmail = if cfg.userEmail != null 
+          
+          email = if cfg.userEmail != null 
                   then cfg.userEmail 
                   else secrets.gitUserEmail or "CHANGE_ME@example.com";
-      
-      aliases = cfg.aliases;
-      
-      extraConfig = {
-        init.defaultBranch = "main";
-        pull.rebase = true;
-        push.autoSetupRemote = true;
-        core.editor = "nvim";
-        color.ui = "auto";
-      } // cfg.extraConfig;
+        };
+        
+        init = {
+          defaultBranch = "main";
+        };
+        
+        pull = {
+          rebase = true;
+        };
+        
+        push = {
+          autoSetupRemote = true;
+        };
+        
+        core = {
+          editor = "nvim";
+        };
+        
+        color = {
+          ui = "auto";
+        };
+        
+        # 👇 АЛИАСЫ ТОЖЕ ЗДЕСЬ
+        alias = {
+          co = "checkout";
+          br = "branch";
+          ci = "commit";
+          st = "status";
+          unstage = "reset HEAD --";
+          last = "log -1 HEAD";
+        };
+      } // cfg.extraSettings;
     };
 
-    # Git алиасы для shell
+    # Git алиасы для shell (оставляем для быстрого доступа)
     home.shellAliases = {
       g = "git";
       ga = "git add";
