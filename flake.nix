@@ -3,11 +3,12 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixpkgs-stable.url = "github:NixOS/nixpkgs/nixos-24.11";
     
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+    
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/master";
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
@@ -26,41 +27,66 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-  outputs = { self, nixpkgs, nixos-hardware, nixpkgs-stable, lanzaboote, home-manager, nix4nvchad, zapret-discord-youtube, ... }: {
+
+  outputs = { self, nixpkgs, nixpkgs-stable, nixos-hardware, lanzaboote, home-manager, nix4nvchad, zapret-discord-youtube, ... }: {
+    
+    # ---------- NIXOS КОНФИГУРАЦИЯ (основная) ----------
     nixosConfigurations.rog-flow-x13 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
+      
       specialArgs = {
         inherit nix4nvchad;
-	inherit nixpkgs-stable;
-	inherit zapret-discord-youtube;
+        inherit nixpkgs-stable;
+        inherit zapret-discord-youtube;
       };
+      
       modules = [
         nixos-hardware.nixosModules.asus-flow-gv302x-amdgpu
-        # nixos-hardware.nixosModules.asus-flow-gv302x-nvidia
         ./configuration.nix
         ./hardware-configuration.nix
         lanzaboote.nixosModules.lanzaboote
         home-manager.nixosModules.home-manager
+        
+        # Главный модуль, который импортирует все остальные
+        ./modules
+        
         {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
+          home-manager.extraSpecialArgs = {
+            inherit nix4nvchad;
+            inherit nixpkgs-stable;
+            inherit zapret-discord-youtube;
+          };
           home-manager.users.lidjen = import ./home.nix;
-	  home-manager.extraSpecialArgs = { inherit nix4nvchad; };
-        }
-	./modules/niri
-	./modules/neovim
-	./modules/zapret
-        {
-          # Fonts
-          fonts.fontDir.enable = true;
-          fonts.packages = with nixpkgs-stable.legacyPackages.x86_64-linux; [
-            jetbrains-mono
-            noto-fonts
-	    noto-fonts-cjk-sans
-            noto-fonts-color-emoji
-          ];
         }
       ];
+    };
+    
+    # ---------- ОТДЕЛЬНАЯ HOME-MANAGER КОНФИГУРАЦИЯ ----------
+    homeConfigurations = {
+      lidjen = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        
+        # extraSpecialArgs для передачи inputs
+        extraSpecialArgs = {
+          inherit nix4nvchad;
+          inherit nixpkgs-stable;
+          inherit zapret-discord-youtube;
+        };
+        
+        # Модули home-manager
+        modules = [
+          # Основной home.nix
+          ./home.nix
+          
+          nix4nvchad.homeManagerModules.default
+
+          ./modules/home/fonts.nix
+          ./modules/home/niri.nix
+          ./modules/home/neovim.nix
+        ];
+      };
     };
   };
 }
